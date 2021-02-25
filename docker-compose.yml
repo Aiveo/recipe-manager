@@ -1,0 +1,43 @@
+version: '3.1'
+
+services:
+  database:
+    container_name: database
+    build:
+      context: "./database"
+      dockerfile: "Dockerfile"
+    volumes:
+      - ./database/db_data:/var/lib/postgresql/data
+    networks:
+      - recipe_manager_network
+    environment:
+      - POSTGRES_PASSWORD=RecipeManagerPaSS
+      - POSTGRES_USER=RecipeManager
+      - POSTGRES_DB=RecipeManagerDB
+    ports:
+      - 5432:5432
+
+  backend:
+    container_name: backend
+    build:
+      context: "./backend"
+      dockerfile: "Dockerfile"
+    networks:
+      - recipe_manager_network
+    depends_on:
+      - database
+    ports:
+      - 8080:8080
+
+#  frontend:
+#  container_name: frontend
+#    build:
+#      context: "./frontend"
+#      dockerfile: "Dockerfile"
+#    networks:
+#      - recipe_manager_network
+#    depends_on:
+#      - backend
+
+networks:
+  recipe_manager_network:
