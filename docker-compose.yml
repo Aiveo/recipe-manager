@@ -24,6 +24,13 @@ services:
       dockerfile: "Dockerfile"
     networks:
       - recipe_manager_network
+    environment:
+      - POSTGRES_PASSWORD=RecipeManagerPaSS
+      - POSTGRES_USER=RecipeManager
+      - POSTGRES_DB=RecipeManagerDB
+      - POSTGRES_HOST=database
+      - TOKEN_SECRET_KEY=bff3ccc8818d9aee07640f190f3d81dfa2aedc5a422bad69
+      - PASSWORD_SALT=59be079a6a3f8c5b7f593da0353f4425fb0eac41afa55a1b
     depends_on:
       - database
     ports:

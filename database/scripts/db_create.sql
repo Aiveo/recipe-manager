@@ -98,6 +98,7 @@ CREATE SEQUENCE public.users_id_seq
 
 
 ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
+ALTER TABLE public.users ADD CONSTRAINT users_email_unique UNIQUE (email);
 
 --====== other ======
 ALTER TABLE ONLY public.ingredients ALTER COLUMN id SET DEFAULT nextval('public.ingredients_id_seq'::regclass);

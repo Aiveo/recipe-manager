@@ -1,4 +1,4 @@
 fastapi
 uvicorn
 pyjwt
-psycopg2
+asyncpg
