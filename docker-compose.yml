@@ -36,15 +36,17 @@ services:
     ports:
       - 8080:8080
 
-#  frontend:
-#  container_name: frontend
-#    build:
-#      context: "./frontend"
-#      dockerfile: "Dockerfile"
-#    networks:
-#      - recipe_manager_network
-#    depends_on:
-#      - backend
+  frontend:
+    container_name: frontend
+    build:
+      context: "./frontend"
+      dockerfile: "Dockerfile"
+    networks:
+      - recipe_manager_network
+    depends_on:
+      - backend
+    ports:
+      - 80:80
 
 networks:
   recipe_manager_network:

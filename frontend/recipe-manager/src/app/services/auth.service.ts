@@ -8,7 +8,7 @@ import {Subject} from "rxjs";
 export class AuthService {
 
   private token = '';
-  private endpoint = 'http://0.0.0.0:8080/';
+  private endpoint = 'http://localhost:8080/';
   authSubject = new Subject<boolean>();
 
   constructor(private httpClient: HttpClient) {}
@@ -21,15 +21,15 @@ export class AuthService {
     this.authSubject.next(this.isAuth());
   }
 
-  signUp(email: string, password: string, name: string, surname: string) {
+  signUp(email: string, password: string, lastname: string, firstname: string) {
     return new Promise<void>(
       (resolve, reject) => {
         this.httpClient
           .post(this.endpoint + 'register?' +
             'email=' + email +
             '&password=' + password +
-            '&name=' + name +
-            '&surname=' + surname,
+            '&lastname=' + lastname +
+            '&firstname=' + firstname,
             {})
           .subscribe(
             (response: any) => {

@@ -76,12 +76,12 @@ def login(email: str, password: str):
 
 
 @app.post("/register")
-async def register(email: str, password: str, name: str, surname: str):
+async def register(email: str, password: str, lastname: str, firstname: str):
     password = hashlib.sha256((password + PASSWORD_SALT).encode('utf-8')).hexdigest()
     try:
         cursor.execute(
-            "INSERT INTO public.users(email, surname, name, password) VALUES (%s,%s,%s,%s) RETURNING public.users.id;",
-            (email, surname, name, password)
+            "INSERT INTO public.users(email, firstname, lastname, password) VALUES (%s,%s,%s,%s) RETURNING public.users.id;",
+            (email, lastname, firstname, password)
         )
         conn.commit()
         payload = {"user_id": cursor.fetchone()[0], "exp": timeLimit}

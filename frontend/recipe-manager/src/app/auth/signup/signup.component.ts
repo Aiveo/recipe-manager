@@ -33,10 +33,10 @@ export class SignupComponent implements OnInit {
   onSubmit() {
     const email = this.signupForm.get('email').value;
     const password = this.signupForm.get('password').value;
-    const name = this.signupForm.get('name').value;
-    const surname = this.signupForm.get('surname').value;
+    const lastname = this.signupForm.get('name').value;
+    const firstname = this.signupForm.get('surname').value;
 
-    this.authService.signUp(email, password, name, surname).then(
+    this.authService.signUp(email, password, lastname, firstname).then(
       () => {
         this.router.navigate(['/recipes']);
       },
