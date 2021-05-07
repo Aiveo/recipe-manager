@@ -51,7 +51,7 @@ ALTER SEQUENCE public.recipe_steps_id_seq OWNED BY public.recipe_steps.id;
 --====== recipe_ingredients ======
 CREATE TABLE public.recipe_ingredients (
     id_ref_ingredient integer NOT NULL,
-    if_ref_recipe integer NOT NULL,
+    id_ref_recipe integer NOT NULL,
     quantity integer,
     id_ref_measurement_unit integer
 );
@@ -115,7 +115,7 @@ ALTER TABLE ONLY public.ingredients
 ALTER TABLE ONLY public.recipe_steps
     ADD CONSTRAINT recipe_steps_pkey PRIMARY KEY (id);
 ALTER TABLE ONLY public.recipe_ingredients
-    ADD CONSTRAINT recipe_ingredients_pkey PRIMARY KEY (id_ref_ingredient, if_ref_recipe);
+    ADD CONSTRAINT recipe_ingredients_pkey PRIMARY KEY (id_ref_ingredient, id_ref_recipe);
 ALTER TABLE ONLY public.recipes
     ADD CONSTRAINT recipes_pkey PRIMARY KEY (id);
 ALTER TABLE ONLY public.users
@@ -129,4 +129,4 @@ ALTER TABLE ONLY public.recipe_ingredients
 ALTER TABLE ONLY public.recipe_steps
     ADD CONSTRAINT id_ref_recipe_fk FOREIGN KEY (id_ref_recipe) REFERENCES public.recipes(id);
 ALTER TABLE ONLY public.recipe_ingredients
-    ADD CONSTRAINT id_ref_recipe_fk FOREIGN KEY (if_ref_recipe) REFERENCES public.recipes(id);
+    ADD CONSTRAINT id_ref_recipe_fk FOREIGN KEY (id_ref_recipe) REFERENCES public.recipes(id);

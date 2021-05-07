@@ -33,8 +33,10 @@ services:
       - PASSWORD_SALT=59be079a6a3f8c5b7f593da0353f4425fb0eac41afa55a1b
     depends_on:
       - database
+    restart: on-failure:10
     ports:
       - 8080:8080
+
 
   frontend:
     container_name: frontend

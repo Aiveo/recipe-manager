@@ -100,3 +100,84 @@ async def test(token: str = Depends(oauth2_scheme)):
         return jwt.decode(token, TOKEN_SECRET_KEY, algorithms=['HS256'])
     else:
         raise HTTPException(status_code=401, detail="An access token is required")
+
+
+@app.get("/getRecipes")
+async def getRecipes():
+    recipes = []
+    sql = "SELECT id,name,description,picture FROM public.recipes;"
+    try:
+        cursor.execute(sql)
+        for recipe in cursor.fetchall():
+            recipes.append({
+                "id": recipe[0],
+                "name": recipe[1].strip(),
+                "description": recipe[2],
+                "image": recipe[3]
+            })
+        return recipes
+    except:
+        raise HTTPException(status_code=500, detail="An error has occurred")
+
+
+@app.get("/getOneRecipe")
+async def getOneRecipe(id: int):
+    sql = """SELECT 
+                public.recipes.id, 
+                public.recipes.name, 
+                public.recipes.preparation_time, 
+                public.recipes.cooking_time, 
+                public.recipes.description, 
+                public.recipes.picture, 
+                public.recipes.portion, 
+                public.users.id, 
+                public.users.firstname, 
+                public.users.lastname
+            FROM public.recipes
+            INNER JOIN public.users
+            ON public.recipes.id_ref_user = public.users.id
+            WHERE public.recipes.id = %s;"""
+    sql2 = """SELECT step
+            FROM recipe_steps
+            WHERE id_ref_recipe = %s
+            ORDER BY step_order;"""
+    sql3 = """SELECT
+                public.recipe_ingredients.quantity,
+                public.measurement_unit.name,
+                public.ingredients.name
+            FROM
+            (
+                public.recipe_ingredients
+                INNER JOIN public.ingredients
+                ON public.recipe_ingredients.id_ref_ingredient = public.ingredients.id
+            )
+            INNER JOIN public.measurement_unit
+            ON public.recipe_ingredients.id_ref_measurement_unit = public.measurement_unit.id
+            WHERE public.recipe_ingredients.id_ref_recipe = %s;"""
+    try:
+        cursor.execute(sql, (id,))
+        recipe = cursor.fetchone()
+        recipe = {
+            "id": recipe[0],
+            "name": recipe[1].strip(),
+            "preparation_time": recipe[2],
+            "cooking_time": recipe[3],
+            "description": recipe[4],
+            "image": recipe[5],
+            "portion": recipe[6],
+            "id_user": recipe[7],
+            "firstname": recipe[8].strip(),
+            "lastname": recipe[9].strip()
+        }
+        cursor.execute(sql2, (id,))
+        steps = cursor.fetchall()
+        recipe["steps"] = steps
+
+        cursor.execute(sql3, (id,))
+        ingredients = []
+        for ingredient in cursor.fetchall():
+            ingredients.append(str(ingredient[0]) + " " + str(ingredient[1]).strip() + " de " + str(ingredient[2]).strip())
+        recipe['ingredients'] = ingredients
+        return recipe
+    except:
+        raise HTTPException(status_code=500, detail="An error has occurred")

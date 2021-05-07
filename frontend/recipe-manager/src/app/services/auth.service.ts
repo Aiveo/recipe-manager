@@ -11,7 +11,11 @@ export class AuthService {
   private endpoint = 'http://localhost:8080/';
   authSubject = new Subject<boolean>();
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) {
+    if(localStorage.getItem("token")) {
+      this.token = localStorage.getItem("token");
+    }
+  }
 
   isAuth() {
     return this.token !== '';
@@ -34,6 +38,7 @@ export class AuthService {
           .subscribe(
             (response: any) => {
               this.token = response.token;
+              localStorage.setItem("token", this.token);
               this.emitIsAuth();
               resolve();
             },
@@ -49,13 +54,14 @@ export class AuthService {
     return new Promise<void>(
       (resolve, reject) => {
         this.httpClient
-          .post(this.endpoint + 'login?e'+
-            'mail=' + email +
+          .post(this.endpoint + 'login?'+
+            'email=' + email +
             '&password=' + password,
             {})
           .subscribe(
             (response: any) => {
               this.token = response.token;
+              localStorage.setItem("token", this.token);
               this.emitIsAuth();
               resolve();
             },
@@ -69,6 +75,7 @@ export class AuthService {
 
   signOut() {
     this.token = '';
+    localStorage.removeItem("token");
     this.emitIsAuth();
   }
 }
