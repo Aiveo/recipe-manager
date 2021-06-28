@@ -1,1 +1,25 @@
-<p>single-recipe works!</p>
+<h1>{{ recipe['name'] }}</h1>
+<div class="container">
+  <div class="row">
+    <div class="col-12 mb-3">Auteur : <a href="recipes/user/{{ recipe['id_user'] }}">{{ recipe['firstname'] }} {{ recipe['lastname'] }}</a></div>
+    <div class="col-4 mb-3">Temps de préparation : {{ recipe['preparation_time'] }}</div>
+    <div class="col-4 mb-3">Temps de cuisson : {{ recipe['cooking_time'] }}</div>
+    <div class="col-4 mb-3">Portions : {{ recipe['portion'] }}</div>
+    <div class="col-12 mb-3">{{ recipe['description']}}</div>
+    <div class="col-3">
+      <h2>Ingredients</h2>
+        <p *ngFor="let ingredient of recipe['ingredients']; let i = index">{{ ingredient }}</p>
+    </div>
+    <div class="col-9">
+      <h2>Etapes</h2>
+      <div *ngFor="let step of recipe['steps']; let i = index">
+        <div class="card border-dark mb-3">
+          <div class="card-header">Etape {{ i+1 }}</div>
+          <div class="card-body">
+            <p class="card-text">{{ step }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

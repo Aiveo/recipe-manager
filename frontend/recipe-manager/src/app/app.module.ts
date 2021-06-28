@@ -19,7 +19,8 @@ const appRoutes: Routes = [
   { path: 'auth/signin', component: SigninComponent },
   { path: 'recipes', component: RecipesComponent },
   { path: 'recipes/new', canActivate: [AuthGuardService], component: RecipeFormComponent },
-  { path: 'recipes/view/:id', component: SingleRecipeComponent }
+  { path: 'recipes/:id', component: SingleRecipeComponent },
+  { path: 'recipes/user/:id', component: SingleRecipeComponent },
 ];
 
 @NgModule({
